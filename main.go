@@ -10,14 +10,35 @@ type ToDo struct {
 	Content   string    // ToDoの内容
 }
 
-func NewToDo(t time.Time, content string) *ToDo {
+func newToDo(t time.Time, content string) *ToDo {
 	return &ToDo{t, content}
 }
 
-type ToDoList []ToDo
+type ToDoList struct {
+	items *[]ToDo
+}
 
-func Sum(a, b int) int {
-	return a + b
+func NewToDoList() *ToDoList {
+	items := make([]ToDo, 0)
+	return &ToDoList{&items}
+}
+
+func (t *ToDoList) Count() int {
+	return len(*t.items)
+}
+
+func (t *ToDoList) Add(regTime time.Time, content string) {
+	todo := newToDo(regTime, content)
+	temp := append(*t.items, *todo)
+	t.items = &temp
+}
+
+func (t *ToDoList) Get(no int) (bool, *ToDo) {
+	if no <= t.Count() {
+		return true, &(*t.items)[no]
+	}
+
+	return false, nil
 }
 
 func main() {
