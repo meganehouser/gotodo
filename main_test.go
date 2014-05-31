@@ -28,3 +28,13 @@ func TestTodoCanComplete(t *testing.T) {
 	assert.Equal(t, len(lst.GetByStatus(main.Doing)), 0, "ToDo完了時はステータスはDoingではない")
 	assert.Equal(t, len(lst.GetByStatus(main.Complete)), 1, "ToDo完了時はステータスはComplete")
 }
+
+func TestCleanShuldPurgeCompleteTodos(t *testing.T) {
+	lst := main.NewToDoList()
+	lst.Add(time.Now(), "todo1")
+	lst.Add(time.Now(), "todo2")
+	lst.Complete(0)
+	lst.Clean()
+	assert.Equal(t, len(lst.GetByStatus(main.Complete)), 0, "Clean後は完了ToDoは削除されている")
+	assert.Equal(t, len(lst.GetByStatus(main.Doing)), 1, "未完了ToDoは削除されない")
+}

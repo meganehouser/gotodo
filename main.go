@@ -62,6 +62,10 @@ func (t *ToDoList) Complete(no int) error {
 	return errors.New("noが範囲外")
 }
 
+func (t *ToDoList) Clean() {
+	t.items = t.GetByStatus(Doing)
+}
+
 func main() {
 	fmt.Println("Hello world")
 }
