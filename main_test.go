@@ -15,18 +15,8 @@ func TestTodoListCanAddTodo(t *testing.T) {
 	}
 
 	assert.Equal(t, doingCount(), 0, "ToDoリスト生成時は0件")
-
 	lst.Add(time.Now(), "test")
-
 	assert.Equal(t, doingCount(), 1, "ToDoを追加したので1件")
-
-	exists, todo := lst.Get(0)
-	if !exists {
-		t.Error("追加したToDoは取得できる")
-		return
-	}
-
-	assert.Equal(t, todo.Content, "test", "追加したToDo内容を参照できる")
 }
 
 func TestTodoCanComplete(t *testing.T) {

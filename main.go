@@ -22,33 +22,22 @@ func newToDo(t time.Time, content string) *ToDo {
 }
 
 type ToDoList struct {
-	items *[]ToDo
+	items []ToDo
 }
 
 func NewToDoList() *ToDoList {
 	items := make([]ToDo, 0)
-	return &ToDoList{&items}
+	return &ToDoList{items}
 }
 
 func (t *ToDoList) Add(regTime time.Time, content string) {
-	todo := newToDo(regTime, content)
-	temp := append(*t.items, *todo)
-	t.items = &temp
-}
-
-func (t *ToDoList) Get(no int) (bool, *ToDo) {
-	doings := t.GetByStatus(Doing)
-
-	if no <= len(doings) {
-		return true, &(doings[no])
-	}
-
-	return false, nil
+	todo := *(newToDo(regTime, content))
+	t.items = append(t.items, todo)
 }
 
 func (t *ToDoList) GetByStatus(status int) []ToDo {
 	items := make([]ToDo, 0)
-	for _, item := range *t.items {
+	for _, item := range t.items {
 		if item.Status == status {
 			items = append(items, item)
 		}
@@ -58,7 +47,7 @@ func (t *ToDoList) GetByStatus(status int) []ToDo {
 
 func (t *ToDoList) Complete(no int) error {
 	i := 0
-	for j, todo := range *t.items {
+	for j, todo := range t.items {
 		if todo.Status != Doing {
 			continue
 		}
@@ -66,7 +55,7 @@ func (t *ToDoList) Complete(no int) error {
 			continue
 		}
 
-		(*t.items)[j] = ToDo{todo.Registerd, todo.Content, Complete}
+		t.items[j].Status = Complete
 		return nil
 	}
 
